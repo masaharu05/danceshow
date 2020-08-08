@@ -1,0 +1,46 @@
+<p id="notice"><%= notice %></p>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-8">
+    <%= link_to @post.video_url.to_s do %>
+      <%= video_tag(@post.video.to_s, id: "video", class: "img-fluid") %>
+    <% end %>
+      <div class="row">
+        <div class="col-4"><a href="/users/<%= @user.id %>">
+          <%= @user.user_name %>
+          </a></div>
+        <div class="col-4"><strong>Genre:</strong>
+          <% if @post.genre == "1" %>break
+          <% elsif @post.genre == "2" %>pop
+          <% elsif @post.genre == "3" %>lock
+          <% elsif @post.genre == "4" %>hiphop
+          <% elsif @post.genre == "5" %>house
+          <% elsif @post.genre == "6" %>wacck
+          <% elsif @post.genre == "7" %>freestyle
+          <% end %>
+        </div>
+        <div class="col-4"><strong>Music:</strong>
+          <%= @post.music %></div>
+
+      <div class="row">
+        <div class="col-12">
+        <%= @post.memo %>
+        </div>
+      </div>
+        </div>
+    </div>
+    
+</div>
+
+<br>
+<p><a href="/posts" class="btn btn-info">トップに戻る</a></p>
+
+<% if user_signed_in? %>
+  <% if @post.user_id == current_user.id %>
+    <p><a href="/posts/<%= @post.id %>/edit" class="btn btn-success">投稿を編集する</a></p>
+    <p><a href="/posts/<%= @post.id %>" data-method="delete" class="btn btn-danger">投稿を削除する</a></p>
+  <% end %>
+<% end %>
+
+

@@ -1,0 +1,21 @@
+<h1>Lock</h1>
+
+
+
+<div class="row">
+ <% @posts.each do |post| %>
+ <% if post.genre == "3" %>
+  <div class="d-flex align-items-stretch">
+    <div class="col-4">
+      <%= link_to post.video_url.to_s do %>
+        <%= image_tag(post.video_url(:screenshot).to_s, id: "video", :alt => "screenshot", :size =>'400x400') %>
+      <% end %>
+      <p><%= link_to '詳細', post %></p>
+    </div>
+  </div>
+ <% end %>
+ <% end %>
+</div>
+
+
+<a href="/posts" class="btn btn-info">戻る</a>

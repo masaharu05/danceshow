@@ -1,0 +1,36 @@
+<%= form_with(model: post, local: true) do |form| %>
+  <% if post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+        <% post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :memo %>
+    <%= form.text_field :memo %>
+  </div>
+
+  
+
+  <div class="field">
+    <%= form.label :genre %>
+    <%= form.select :genre, {'Break': 1, 'Pop': 2, 'Lock': 3, 'Hiphop': 4, 'House': 5, 'Wacck': 6, 'Freestyle': 7}, { include_blank: '選択してください'}, {   required: true } %>
+  </div>
+
+  <div class="field">
+    <%= form.label :music %>
+    <%= form.text_field :music %>
+  </div>
+
+  
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

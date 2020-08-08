@@ -1,0 +1,159 @@
+<%= stylesheet_link_tag 'users' %>
+
+
+  <div class="profile-card">
+    <div class="profile-card__inner">
+      <div class="profile-thumb">
+        <% if @user.user_image? %>
+              <%= image_tag @user.user_image.url %>
+        <% else %>
+              <%= image_tag "/assets/default.jpg", :size => '100x100' %>
+        <% end %>
+      </div>
+      <div class="profile-content">
+        <span class="profile-name"><%= @user.user_name %></span>
+        <span class="profile-intro"><%= @user.self_introduction %></span>
+      </div>
+    </div>
+  </div>
+
+<div class="content">
+            <div class="data">
+                <ul>
+                    <li>
+                        <%= @user.posts.count %>
+                        <span>Posts</span>
+                    </li>
+                    <li>
+                        <%= @user.followers.count %>
+                        <span><%=link_to "フォロワー", followers_user_path(@user.id) %></span>
+                    </li>
+                    <li>
+                        <%= @user.followings.count %>
+                        <span><%=link_to "フォロー", follows_user_path(@user.id) %></span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="follow"> <div class="icon-twitter"></div>
+             <% if current_user != @user %>
+              <% if @user.followed_by?(current_user) %>
+                  <%=link_to "アンフォロー", user_relationships_path(@user.id), method: :delete %>
+              <% else %>
+                  <%=link_to "フォロー", user_relationships_path(@user.id), method: :post %>
+              <% end %>
+            <% end %>
+            
+            </div>
+        </div>
+
+
+
+
+<ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">MyPost</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="item2-tab" data-toggle="tab" href="#item2" role="tab" aria-controls="item2" aria-selected="false">Like</a>
+  </li>
+</ul>
+
+<div class="tab-content">
+
+  <div class="tab-pane fade show active" id="item1" role="tabpanel" aria-labelledby="item1-tab">
+    
+  <% @posts.each do |post| %>
+  <% if @user.id == post.user_id %>
+    
+      <div class="embed-responsive embed-responsive-16by9">
+        <%= link_to post.video_url.to_s do %>
+          <%= image_tag(post.video_url(:screenshot).to_s, id: "video", class: "embed-responsive-item", :alt => "screenshot") %>
+        <% end %>
+      </div>
+      <div class=".container">
+      <div class="row">
+      <div class="col-1">
+      </div>
+
+        <div class="col-3">
+          <a href="/posts/<%= post.id %>">詳細</a>
+        </div>
+
+        <div class="col-3">
+        <% if user_signed_in? %>
+            <% if post.liked_by?(current_user) %>
+              <span>いいね: </span><%=link_to post.likes.count, post_likes_path(post.id), method: :delete %>
+            <% else %>
+              <span>いいね: </span><%=link_to post.likes.count, post_likes_path(post.id), method: :post %>
+            <% end %>
+        </div>
+
+
+        <div class="col-3">
+          <% if post.user_id == current_user.id %>
+            <td><%= link_to 'Edit', edit_post_path(post) %></td>
+            <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% end %>
+        </div>
+        <% end %>
+      </div>
+      </div>
+  <% end %>
+  <% end %>
+  
+  
+
+
+<nav aria-label="Page navigation">
+<ul class="pagination justify-content-center">
+<%= paginate @posts %>
+</ul>
+</nav>
+</div>
+
+
+
+
+
+  <div class="tab-pane fade" id="item2" role="tabpanel" aria-labelledby="item2-tab"><p>いいねした動画</p>
+  <% @like_posts.each do |post| %>
+    <div class="embed-responsive embed-responsive-16by9">
+        <%= link_to post.video_url.to_s do %>
+          <%= image_tag(post.video_url(:screenshot).to_s, id: "video", class: "embed-responsive-item", :alt => "screenshot") %>
+        <% end %>
+    </div>
+    <div class=".container">
+      <div class="row">
+      <div class="col-1">
+       </div>
+       <div class="col-3">
+        投稿者<a href="/posts/<%= post.id %>"><%= User.find(post.user_id).user_name %></a>
+       </div>
+       <div class="col-3">
+        いいね:<%= post.likes.count %>
+       </div>
+            
+      </div>
+  <% end %>
+    </div>
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+      <%= paginate @posts %>
+      </ul>
+    </nav>
+  </div>
+
+
+
+
+
+
+<hr>
+
+<% if @user.id == current_user.id %>
+  <p><a href="/users/<%= @user.id %>/edit" class="btn btn-success">ユーザー情報を編集する</a>
+<% end %>
+
+
+

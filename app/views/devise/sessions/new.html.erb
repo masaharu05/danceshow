@@ -1,0 +1,45 @@
+
+<%= stylesheet_link_tag 'users' %>
+
+
+<div class="container">
+   <div id="signup">
+      <div class="signup-screen">
+         <div class="space-bot text-center">
+            <h1>Log in</h1>
+           <div class="divider"></div>
+         </div>
+         <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          
+          <div class="field">
+            <%= f.label :email %><br />
+            <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+          </div>
+
+          <div class="field">
+            <%= f.label :password %>
+            <% if @minimum_password_length %>
+            <em>(<%= @minimum_password_length %> characters minimum)</em>
+            <% end %><br />
+            <%= f.password_field :password, autocomplete: "new-password" %>
+          </div>
+          <% if devise_mapping.rememberable? %>
+           <div class="field">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me %>
+           </div>
+          <% end %>
+
+
+          <div class="actions">
+            <%= f.submit "Log in" %>
+          </div>
+          <div class="actions">
+            <%= render "devise/shared/links" %>
+          </div>
+         <% end %>
+
+      </div>
+   </div>
+</div>
+

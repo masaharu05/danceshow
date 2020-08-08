@@ -1,0 +1,21 @@
+<h1>Freestyle</h1>
+
+<tbody>
+    <% @posts.each do |post| %>
+     <% if post.genre == "7" %>
+        <hr>
+          <p><a href="/users/<%= post.user_id %>"><%= User.find(post.user_id).user_name %></a></p>
+          <p>music:<%= post.music %></p>
+
+          <p>
+            <%= link_to post.video_url.to_s do %>
+          <%= image_tag(post.video_url(:screenshot).to_s, id: "video", :alt => "screenshot") %>
+            <% end %>
+          </p>
+          <td><%= link_to '詳細', post %></td>
+        <hr>
+        <br>
+        <br>
+     <% end %>
+    <% end %>
+  </tbody>

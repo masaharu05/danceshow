@@ -1,0 +1,81 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Posts</h1>
+
+
+
+<% @posts.each do |post| %>
+    <div class="embed-responsive embed-responsive-16by9">
+        <%= link_to post.video_url.to_s do %>
+          <%= image_tag(post.video_url(:screenshot).to_s, id: "video", class: "embed-responsive-item", :alt => "screenshot") %>
+        <% end %>
+    </div>
+
+    <div class=".container">
+      <div class="row">
+        <div class="col-1">
+        </div>
+        <div class="col-3">
+        投稿者<a href="/posts/<%= post.id %>"><%= User.find(post.user_id).user_name %></a>
+        </div>
+
+        <div class="col-3">
+        <% if user_signed_in? %>
+          <% if post.liked_by?(current_user) %>
+            <span>いいね: </span><%=link_to post.likes.count, post_likes_path(post.id), method: :delete %>
+          <% else %>
+            <span>いいね: </span><%=link_to post.likes.count, post_likes_path(post.id), method: :post %>
+          <% end %>
+        <% else %>
+          <span>お気に入り数: </span><%= post.likes.count %>
+        <% end %>
+        </div>
+
+        <div class="col-4">
+          <% if user_signed_in? %>
+            <% if current_user != post.user %>
+              <% if post.user.followed_by?(current_user) %>
+                  <p><%=link_to "フォローを外す", user_relationships_path(post.user.id), method: :delete %></p>
+              <% else %>
+                  <p><%=link_to "フォローする", user_relationships_path(post.user.id), method: :post %></p>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+        
+      </div>
+    </div>
+    <br>
+    <% end %>
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+      <%= paginate @posts %>
+      </ul>
+    </nav>
+
+
+
+
+
+<br>
+<br>
+<br>
+
+<% if user_signed_in? %>
+<p><a href="/posts/new" class="btn btn-info">投稿する</a></p>
+<% end %>
+
+<br>
+<a href="/genres/break">break</a>
+<a href="/genres/pop">pop</a>
+<a href="/genres/lock">lock</a>
+<a href="/genres/hiphop">hiphop</a>
+<a href="/genres/house">house</a>
+<a href="/genres/wacck">wacck</a>
+<a href="/genres/freestyle">freestyle</a>
+
+
+
+
+
+

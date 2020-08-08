@@ -1,0 +1,12 @@
+<h1>ユーザー情報を変更しました。</h1>
+<hr>
+<p>名前：<%= @user.user_name %></p>
+<p>自己紹介：<%= @user.self_introduction %></p>
+<p>プロフィール画像
+<%= image_tag @user.user_image.url if @user.user_image.present? %>
+</p>
+
+<hr>
+<p><a href="/users/<%= @user.id %>" class="btn btn-primary">ユーザー情報に戻る</a></p>
+<p><a href="/users/<%= @user.id %>/edit" class="btn btn-success">ユーザー情報の編集に戻る</a></p>
+<p><a href="/posts" class="btn btn-info">トップに戻る</a></p>
